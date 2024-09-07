@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.base.mapper.BaseTeacherMapper">
+    
+    <resultMap type="BaseTeacher" id="BaseTeacherResult">
+        <result property="id"    column="id"    />
+        <result property="teacherName"    column="teacher_name"    />
+        <result property="teacherCode"    column="teacher_code"    />
+    </resultMap>
+
+    <sql id="selectBaseTeacherVo">
+        select id, teacher_name, teacher_code from base_teacher
+    </sql>
+
+    <select id="selectBaseTeacherList" parameterType="BaseTeacher" resultMap="BaseTeacherResult">
+        <include refid="selectBaseTeacherVo"/>
+        <where>  
+            <if test="teacherName != null  and teacherName != ''"> and teacher_name like concat('%', #{teacherName}, '%')</if>
+            <if test="teacherCode != null  and teacherCode != ''"> and teacher_code = #{teacherCode}</if>
+        </where>
+    </select>
+    
+    <select id="selectBaseTeacherById" parameterType="Long" resultMap="BaseTeacherResult">
+        <include refid="selectBaseTeacherVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertBaseTeacher" parameterType="BaseTeacher" useGeneratedKeys="true" keyProperty="id">
+        insert into base_teacher
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="teacherName != null and teacherName != ''">teacher_name,</if>
+            <if test="teacherCode != null and teacherCode != ''">teacher_code,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="teacherName != null and teacherName != ''">#{teacherName},</if>
+            <if test="teacherCode != null and teacherCode != ''">#{teacherCode},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBaseTeacher" parameterType="BaseTeacher">
+        update base_teacher
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="teacherName != null and teacherName != ''">teacher_name = #{teacherName},</if>
+            <if test="teacherCode != null and teacherCode != ''">teacher_code = #{teacherCode},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBaseTeacherById" parameterType="Long">
+        delete from base_teacher where id = #{id}
+    </delete>
+
+    <delete id="deleteBaseTeacherByIds" parameterType="String">
+        delete from base_teacher where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

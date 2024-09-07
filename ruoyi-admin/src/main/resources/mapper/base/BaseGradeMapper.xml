@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.base.mapper.BaseGradeMapper">
+    
+    <resultMap type="BaseGrade" id="BaseGradeResult">
+        <result property="id"    column="id"    />
+        <result property="gradeCode"    column="grade_code"    />
+        <result property="gradeName"    column="grade_name"    />
+    </resultMap>
+
+    <sql id="selectBaseGradeVo">
+        select id, grade_code, grade_name from base_grade
+    </sql>
+
+    <select id="selectBaseGradeList" parameterType="BaseGrade" resultMap="BaseGradeResult">
+        <include refid="selectBaseGradeVo"/>
+        <where>  
+            <if test="gradeCode != null  and gradeCode != ''"> and grade_code = #{gradeCode}</if>
+            <if test="gradeName != null  and gradeName != ''"> and grade_name like concat('%', #{gradeName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectBaseGradeById" parameterType="Long" resultMap="BaseGradeResult">
+        <include refid="selectBaseGradeVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertBaseGrade" parameterType="BaseGrade" useGeneratedKeys="true" keyProperty="id">
+        insert into base_grade
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="gradeCode != null">grade_code,</if>
+            <if test="gradeName != null">grade_name,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="gradeCode != null">#{gradeCode},</if>
+            <if test="gradeName != null">#{gradeName},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBaseGrade" parameterType="BaseGrade">
+        update base_grade
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="gradeCode != null">grade_code = #{gradeCode},</if>
+            <if test="gradeName != null">grade_name = #{gradeName},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBaseGradeById" parameterType="Long">
+        delete from base_grade where id = #{id}
+    </delete>
+
+    <delete id="deleteBaseGradeByIds" parameterType="String">
+        delete from base_grade where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

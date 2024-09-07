@@ -1,0 +1,24 @@
+package com.ruoyi.course.mapper;
+
+import com.ruoyi.course.domain.CourseInfo;
+import com.ruoyi.course.domain.TeachingSettingModel;
+
+import java.util.List;
+
+/**
+ * 课程教授Mapper接口
+ * 
+ * @author ruoyi
+ * @date 2024-09-05
+ */
+public interface TeachingSettingMapper
+{
+    /**
+     * 查询课程信息
+     * 
+     * @return 课程设置信息
+     */
+    public List<TeachingSettingModel> selectTeachingSettingist();
+
+
+}
