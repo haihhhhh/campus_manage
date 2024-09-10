@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.laohai.base.mapper.BaseStudentMapper">
+    
+    <resultMap type="BaseStudent" id="BaseStudentResult">
+        <result property="id"    column="id"    />
+        <result property="studentName"    column="student_name"    />
+        <result property="studentCode"    column="student_code"    />
+        <result property="sex"    column="sex"    />
+    </resultMap>
+
+    <sql id="selectBaseStudentVo">
+        select id, student_name, student_code, sex from base_student
+    </sql>
+
+    <select id="selectBaseStudentList" parameterType="BaseStudent" resultMap="BaseStudentResult">
+        <include refid="selectBaseStudentVo"/>
+        <where>  
+            <if test="studentName != null  and studentName != ''"> and student_name like concat('%', #{studentName}, '%')</if>
+            <if test="studentCode != null  and studentCode != ''"> and student_code = #{studentCode}</if>
+            <if test="sex != null "> and sex = #{sex}</if>
+        </where>
+    </select>
+    
+    <select id="selectBaseStudentById" parameterType="Long" resultMap="BaseStudentResult">
+        <include refid="selectBaseStudentVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertBaseStudent" parameterType="BaseStudent">
+        insert into base_student
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="studentName != null and studentName != ''">student_name,</if>
+            <if test="studentCode != null and studentCode != ''">student_code,</if>
+            <if test="sex != null">sex,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="studentName != null and studentName != ''">#{studentName},</if>
+            <if test="studentCode != null and studentCode != ''">#{studentCode},</if>
+            <if test="sex != null">#{sex},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBaseStudent" parameterType="BaseStudent">
+        update base_student
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="studentName != null and studentName != ''">student_name = #{studentName},</if>
+            <if test="studentCode != null and studentCode != ''">student_code = #{studentCode},</if>
+            <if test="sex != null">sex = #{sex},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBaseStudentById" parameterType="Long">
+        delete from base_student where id = #{id}
+    </delete>
+
+    <delete id="deleteBaseStudentByIds" parameterType="String">
+        delete from base_student where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>
