@@ -1,9 +1,13 @@
 package com.ruoyi.course.service;
 
+import com.ruoyi.base.domain.BaseTeacher;
+import com.ruoyi.course.domain.CourseBase;
 import com.ruoyi.course.domain.CourseInfo;
 import com.ruoyi.course.domain.TeachingInfo;
+import com.ruoyi.course.domain.TeachingSettingModel;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 课程色湖之信息Service接口
@@ -18,7 +22,25 @@ public interface ITeachingSettingService
      * 
      * @return 课程信息
      */
-    public List<TeachingInfo> selectTeachingSettingInfo();
+    public Map<String,List<TeachingSettingModel>> selectTeachingSettingInfo(TeachingSettingModel model);
+
+    /**
+     * 设置课程教授信息
+     * @param gradeCode
+     * @param teacherCode
+     * @return
+     */
+    public int clearTeaching(String gradeCode,String teacherCode,String courseCode);
+
+    public int setTeaching(String gradeCode, String teacherCode,String courseCode) ;
+
+
+    /**
+     * 查询教师
+     *
+     * @return 课程基础信息管理集合
+     */
+    public List<BaseTeacher> selectTeacher(BaseTeacher baseTeacher,String filterTeacherCode);
 
 //    /**
 //     * 查询课程信息列表

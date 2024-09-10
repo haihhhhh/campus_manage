@@ -1,6 +1,8 @@
 package com.ruoyi.base.mapper;
 
 import java.util.List;
+import java.util.Map;
+
 import com.ruoyi.base.domain.BaseTeacher;
 
 /**
@@ -19,6 +21,13 @@ public interface BaseTeacherMapper
      */
     public BaseTeacher selectBaseTeacherById(Long id);
 
+    /**
+     * 过滤教师
+     *
+     * @param params 参数
+     * @return 教师
+     */
+    public List<BaseTeacher> selectFilterBaseTeacherByCode(Map<String,Object> params);
     /**
      * 查询教师列表
      * 

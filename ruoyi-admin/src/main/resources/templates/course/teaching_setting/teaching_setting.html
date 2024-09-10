@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('授课设置')" />
+</head>
+<body class="gray-bg">
+    <div class="wrapper wrapper-content">
+        <div class="col-sm-12">
+            <div id="currentSeason" class="col-sm-12 search-collapse">
+                <h1  th:fragment="fragment-season" th:text="${season}">当前学期：</h1>
+            </div>
+        </div>
+        <div class="note-icon-col-after"></div>
+        <div class="col-sm-12">
+            <div class="row" id="teachingSettingList">
+                <div class="col-sm-4" th:fragment="fragment-teaching" th:each="item, stat : ${teachingSettingList}">
+                            <h5><i class="fa fa-bars"></i> [[${item.value[0].gradeName}]]</h5>
+                        <div class="ibox-content" style="height:300px">
+                            <table class="table table-hover no-margins" >
+                                <thead>
+                                <tr>
+                                    <th>开设课程</th>
+                                    <th>分管老师</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody >
+                                <tr th:each="itemTemp : ${item.value}">
+                                    <td style="word-wrap:break-word;word-break:break-all;" >[[${itemTemp.courseName}]]</td>
+                                    <td style="word-wrap:break-word;word-break:break-all;" >[[${itemTemp.teacherName}]]</td>
+                                    <td style="width: 80px">
+                                        <a href="javascript:;" th:onclick="clearTeaching([[${itemTemp.gradeCode}]],[[${itemTemp.teacherCode}]],[[${itemTemp.courseCode}]])" title="清除"><i class="fa fa-trash-o text-danger"></i></a>
+
+                                        <a href="javascript:;" th:onclick="settingCourse([[${itemTemp.gradeCode}]],[[${itemTemp.teacherCode}]],[[${itemTemp.courseCode}]])" title="设置"><i class="fa fa-link"></i></a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "course/teaching_setting";
+        function getCurrentSeason(){
+            $.ajax({
+                type: "post",
+                url: prefix + "/getCurrentSeason",
+                data: {
+                    "fragment": 'fragment-season'
+                },
+                success: function(data) {
+                    // console.log(data);
+                    $("#currentSeason").html(data);
+                    getTeachingSettingList();
+                }
+            });
+        }
+        function getTeachingSettingList(){
+            $.ajax({
+                type: "post",
+                url: prefix + "/teachingSettingList",
+                data: {
+                    "fragment": 'fragment-teaching'
+                },
+                success: function(data) {
+                    // console.log(data);
+                    $("#teachingSettingList").html(data);
+                }
+            });
+        }
+        $(function() {
+            getCurrentSeason();
+        });
+
+        function clearTeaching(gradeCode,teacherCode,courseCode){
+            $.ajax({
+                type: "post",
+                url: prefix + "/clearTeaching",
+                data: {
+                    "gradeCode": gradeCode
+                    ,"teacherCode": teacherCode
+                    ,"courseCode": courseCode
+                },
+                success: function(data) {
+                    $.modal.msg("删除成功.");
+                    window.location.reload();
+                }
+            });
+        }
+
+        function settingCourse(gradeCode,teacherCode,courseCode){
+
+            var url = prefix + '/settingCourse/' +"?"
+                    +"gradeCode="+gradeCode
+                    + (teacherCode!=null?("&teacherCode="+teacherCode):'')
+                    +"&courseCode="+courseCode
+            ;
+
+            $.modal.open("设置课程老师", url);
+        }
+
+    </script>
+</body>
+</html>

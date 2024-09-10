@@ -14,51 +14,44 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="season"    column="season"    />
     </resultMap>
 
-    <sql id="TeachingSettingVo">
+    <select id="selectTeachingSettingList" parameterType="TeachingSettingModel" resultMap="TeachingSettingResult">
         select bg.grade_name,bg.grade_code,course_name,ci.course_code,teacher_name,ct.teacher_code,ci.season from base_grade bg
         left join course_info ci on bg.grade_code=ci.grade_code
         left join course_base cb on cb.course_code=ci.course_code
         left join course_teaching ct on ct.course_id=ci.id
         left join base_teacher bt on bt.teacher_code=ct.teacher_code
-        GROUP BY bg.grade_code,ci.course_code,ct.teacher_code,ci.season
-    </sql>
-
-    <select id="selectTeachingSettingist" parameterType="TeachingSettingModel" resultMap="TeachingSettingResult">
-        <include refid="TeachingSettingVo"/>
         <where>
-            <if test="season != null  and season != ''"> and ci.season = #{season}</if>
+            <if test="gradeCode != null and gradeCode != ''"> and ci.grade_code = #{gradeCode}</if>
+            <if test="courseCode != null and courseCode != ''"> and ci.course_code = #{courseCode}</if>
+            <if test="teacherCode != null and teacherCode != ''"> and bt.teacher_code = #{teacherCode}</if>
+            <if test="season != null and season != ''"> and ci.season = #{season}</if>
         </where>
-        ;
+        GROUP BY bg.grade_code,ci.course_code,ct.teacher_code,ci.season
     </select>
-    
-<!--    <select id="selectCourseInfoById" parameterType="Long" resultMap="CourseInfoResult">-->
-<!--        <include refid="selectCourseInfoVo"/>-->
-<!--        where id = #{id}-->
-<!--    </select>-->
 
-<!--    <insert id="insertCourseInfo" parameterType="CourseInfo" useGeneratedKeys="true" keyProperty="id">-->
-<!--        insert into course_info-->
-<!--        <trim prefix="(" suffix=")" suffixOverrides=",">-->
-<!--            <if test="courseCode != null">course_code,</if>-->
-<!--            <if test="gradeCode != null">grade_code,</if>-->
-<!--            <if test="season != null">season,</if>-->
-<!--         </trim>-->
-<!--        <trim prefix="values (" suffix=")" suffixOverrides=",">-->
-<!--            <if test="courseCode != null">#{courseCode},</if>-->
-<!--            <if test="gradeCode != null">#{gradeCode},</if>-->
-<!--            <if test="season != null">#{season},</if>-->
-<!--         </trim>-->
-<!--    </insert>-->
+    <delete id="clearTeaching" parameterType="java.util.List">
+        delete from course_teaching where course_id in
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
 
-<!--    <delete id="deleteCourseInfoById" parameterType="Long">-->
-<!--        delete from course_info where id = #{id}-->
-<!--    </delete>-->
-
-<!--    <delete id="deleteCourseInfoByIds" parameterType="String">-->
-<!--        delete from course_info where id in -->
-<!--        <foreach item="id" collection="array" open="(" separator="," close=")">-->
-<!--            #{id}-->
-<!--        </foreach>-->
-<!--    </delete>-->
+    <insert id="setTeaching" parameterType="TeachingSettingModel" useGeneratedKeys="true" keyProperty="id">
+        insert into course_teaching
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="courseId != null">course_id,</if>
+            <if test="teacherCode != null">teacher_code,</if>
+            <if test="gradeCode != null">grade_code,</if>
+            <if test="classCode != null">class_code,</if>
+            <if test="season != null">season,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="courseId != null">#{courseId},</if>
+            <if test="teacherCode != null">#{teacherCode},</if>
+            <if test="gradeCode != null">#{gradeCode},</if>
+            <if test="classCode != null">#{classCode},</if>
+            <if test="season != null">#{season},</if>
+        </trim>
+    </insert>
 
 </mapper>

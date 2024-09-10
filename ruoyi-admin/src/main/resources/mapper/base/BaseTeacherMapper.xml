@@ -26,6 +26,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectBaseTeacherVo"/>
         where id = #{id}
     </select>
+    <select id="selectFilterBaseTeacherByCode" parameterType="map" resultMap="BaseTeacherResult">
+        <include refid="selectBaseTeacherVo"/>
+        <where>
+            <if test="filterTeacherCode != null  and filterTeacherCode != ''"> and teacher_code != #{filterTeacherCode}</if>
+            <if test="baseTeacher.teacherName != null  and baseTeacher.teacherName != ''"> and teacher_name like concat('%', #{baseTeacher.teacherName}, '%')</if>
+            <if test="baseTeacher.teacherCode != null  and baseTeacher.teacherCode != ''"> and teacher_code = #{baseTeacher.teacherCode}</if>
+        </where>
+    </select>
 
     <insert id="insertBaseTeacher" parameterType="BaseTeacher" useGeneratedKeys="true" keyProperty="id">
         insert into base_teacher

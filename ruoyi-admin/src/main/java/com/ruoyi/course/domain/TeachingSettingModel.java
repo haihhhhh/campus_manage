@@ -13,6 +13,10 @@ import java.util.List;
  */
 public class TeachingSettingModel
 {
+    /**  */
+    private Long id;
+
+    private Long courseId;
     /**
      * 年级名称
      */
@@ -44,8 +48,39 @@ public class TeachingSettingModel
     private String teacherName;
 
     private String season;
+
+    private String classCode;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(Long courseId) {
+        this.courseId = courseId;
+    }
+
     public String getGradeName() {
         return gradeName;
+    }
+
+    public void setGradeName(String gradeName) {
+        this.gradeName = gradeName;
+    }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
+    }
+
+    public void setTeacherName(String teacherName) {
+        this.teacherName = teacherName;
     }
 
     public String getGradeCode() {
@@ -70,6 +105,30 @@ public class TeachingSettingModel
 
     public String getSeason() {
         return season;
+    }
+
+    public void setGradeCode(String gradeCode) {
+        this.gradeCode = gradeCode;
+    }
+
+    public void setCourseCode(String courseCode) {
+        this.courseCode = courseCode;
+    }
+
+    public void setTeacherCode(String teacherCode) {
+        this.teacherCode = teacherCode;
+    }
+
+    public void setSeason(String season) {
+        this.season = season;
+    }
+
+    public String getClassCode() {
+        return classCode;
+    }
+
+    public void setClassCode(String classCode) {
+        this.classCode = classCode;
     }
 
     //    @Override

@@ -18,7 +18,20 @@ public interface TeachingSettingMapper
      * 
      * @return 课程设置信息
      */
-    public List<TeachingSettingModel> selectTeachingSettingist();
+    public List<TeachingSettingModel> selectTeachingSettingList(TeachingSettingModel model);
 
+    /**
+     * 设置教授信息
+     * @param model
+     * @return
+     */
+    public int setTeaching(TeachingSettingModel model);
+
+    /**
+     * 清除教授信息
+     * @param ids
+     * @return
+     */
+    public int clearTeaching(List<Long> ids);
 
 }
