@@ -9,7 +9,7 @@ laohai:
   # 实例演示开关
   demoEnabled: true
   # 文件路径 示例（ Windows配置D:/laohai/uploadPath，Linux配置 /home/laohai/uploadPath）
-  profile: C:/laohai/uploadPath
+  profile: /usr/local/uploadPath
   # 获取ip地址开关
   addressEnabled: false
 
