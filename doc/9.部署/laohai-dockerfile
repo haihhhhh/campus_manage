@@ -1,0 +1,15 @@
+# 基础镜像
+FROM java:8
+# author
+MAINTAINER laohai
+
+# 挂载目录
+VOLUME /www/wwwroot/campus
+# 创建目录
+RUN mkdir -p /www/wwwroot/campus
+# 指定路径
+WORKDIR /www/wwwroot/campus
+# 复制jar文件到路径
+COPY ./jar/*.jar /www/wwwroot/campus/campus-admin.jar
+# 启动应用
+ENTRYPOINT ["java","-jar","campus-admin.jar"]

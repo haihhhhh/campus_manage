@@ -1,0 +1,39 @@
+version : '3'
+services:
+  campus-mysql:
+    container_name: campus-mysql
+    image: mysql:5.7
+    build:
+      context: .
+      dockerfile: mysql-dockerfile
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql/conf:/etc/mysql/conf.d
+      - ./mysql/logs:/logs
+      - ./mysql/data:/var/lib/mysql
+    command: [
+          'mysqld',
+          '--innodb-buffer-pool-size=80M',
+          '--character-set-server=utf8mb4',
+          '--collation-server=utf8mb4_unicode_ci',
+          '--default-time-zone=+8:00',
+          '--lower-case-table-names=1'
+        ]
+    environment:
+      MYSQL_DATABASE: campus
+      MYSQL_ROOT_PASSWORD: root
+  campus-server:
+    container_name: campus-server
+    build:
+      context: .
+      dockerfile: campus-dockerfile
+    ports:
+      - "8080:80"
+    volumes:
+      - ./campus/logs:/home/campus/logs
+      - ./campus/uploadPath:/home/campus/uploadPath
+    depends_on:
+      - campus-mysql
+    links:
+      - campus-mysql
