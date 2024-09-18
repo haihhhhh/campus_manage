@@ -26,7 +26,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="teacherCode != null and teacherCode != ''"> and bt.teacher_code = #{teacherCode}</if>
             <if test="season != null and season != ''"> and ci.season = #{season}</if>
         </where>
-        GROUP BY bg.grade_code,ci.course_code,ct.teacher_code,ci.season
+        GROUP BY bg.grade_name,course_name,teacher_name,bg.grade_code,ci.course_code,ct.teacher_code,ci.season
     </select>
 
     <delete id="clearTeaching" parameterType="java.util.List">
